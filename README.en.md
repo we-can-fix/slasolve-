@@ -25,6 +25,7 @@ Auto-Fix Bot is a multi-functional intelligent development assistant focused on 
 - [Cloud Delegation Guide](./docs/CLOUD_DELEGATION.md) - Learn how to delegate tasks to cloud agents (Chinese)
 - [Visual Elements Guide](./docs/VISUAL_ELEMENTS.md) - Visual design specifications and usage guide (Chinese)
 - [Quick Start Guide](./docs/QUICK_START.md) - Get started in 5 minutes (Chinese)
+- [GitHub Copilot Setup](./docs/COPILOT_SETUP.md) - GitHub Copilot custom instructions guide (English) ✨
 
 > 📝 **Note**: Most documentation is currently in Traditional Chinese. English translations are being developed.
 
