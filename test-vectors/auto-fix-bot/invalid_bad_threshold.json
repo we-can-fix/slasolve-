@@ -1,0 +1,36 @@
+{
+  "test_metadata": {
+    "name": "invalid_bad_threshold",
+    "description": "無效的複雜度閾值（負數）",
+    "category": "invalid_schema",
+    "expected_result": "fail",
+    "expected_error": "Threshold must be greater than 0",
+    "created_at": "2025-11-21T10:00:00Z"
+  },
+  
+  "payload": {
+    "project": {
+      "name": "test-project",
+      "language": "javascript"
+    },
+    "analysis": {
+      "enabled": true,
+      "rules": {
+        "complexity": {
+          "enabled": true,
+          "threshold": -5
+        }
+      }
+    },
+    "auto_fix": {
+      "enabled": true,
+      "types": []
+    }
+  },
+  
+  "assertions": {
+    "schema_valid": false,
+    "error_type": "validation_error",
+    "error_field": "analysis.rules.complexity.threshold"
+  }
+}

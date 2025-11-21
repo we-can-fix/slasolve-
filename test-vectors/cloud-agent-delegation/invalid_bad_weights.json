@@ -1,0 +1,40 @@
+{
+  "test_metadata": {
+    "name": "invalid_bad_weights",
+    "description": "權重總和不等於100的無效配置",
+    "category": "invalid_schema",
+    "expected_result": "fail",
+    "expected_error": "Routing weights must sum to 100 (±5%)",
+    "created_at": "2025-11-21T10:00:00Z"
+  },
+  
+  "payload": {
+    "version": "1.0",
+    "delegation": {
+      "enabled": true,
+      "providers": {
+        "aws": {
+          "enabled": true,
+          "region": "us-east-1",
+          "function_name": "auto-fix-bot-delegate"
+        }
+      },
+      "routing": {
+        "strategy": "weighted",
+        "weights": {
+          "aws": 150,
+          "gcp": 50
+        }
+      },
+      "monitoring": {
+        "enabled": false
+      }
+    }
+  },
+  
+  "assertions": {
+    "schema_valid": false,
+    "error_type": "validation_error",
+    "error_field": "routing.weights"
+  }
+}
