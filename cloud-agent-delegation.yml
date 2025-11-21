@@ -431,7 +431,6 @@ compliance:
     encryption_at_rest: true
     encryption_in_transit: true
 
----
 # 文檔與註釋
 documentation:
   version: "1.0.0"
