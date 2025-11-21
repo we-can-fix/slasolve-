@@ -1,0 +1,30 @@
+{
+  "name": "slasolve-mcp-servers",
+  "version": "1.0.0",
+  "description": "MCP servers for AutoExecutionEngine Custom Agent",
+  "type": "module",
+  "scripts": {
+    "start:code-analyzer": "node code-analyzer.js",
+    "start:test-generator": "node test-generator.js",
+    "start:doc-generator": "node doc-generator.js",
+    "start:slsa-validator": "node slsa-validator.js",
+    "start:security-scanner": "node security-scanner.js",
+    "start:performance-analyzer": "node performance-analyzer.js",
+    "validate": "node --check code-analyzer.js && node --check test-generator.js && node --check doc-generator.js && node --check slsa-validator.js && node --check security-scanner.js && node --check performance-analyzer.js"
+  },
+  "keywords": [
+    "mcp",
+    "slsa",
+    "provenance",
+    "testing",
+    "security"
+  ],
+  "author": "AutoExecutionEngine Team",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "test_metadata": {
+    "name": "valid_full",
+    "description": "完整的雲端代理配置，包含所有提供商和完整功能",
+    "category": "valid_full",
+    "expected_result": "pass",
+    "created_at": "2025-11-21T10:00:00Z",
+    "created_by": "test-automation"
+  },
+  
+  "payload": {
+    "version": "1.0",
+    "delegation": {
+      "enabled": true,
+      "providers": {
+        "aws": {
+          "enabled": true,
+          "region": "us-east-1",
+          "function_name": "auto-fix-bot-delegate",
+          "timeout": 300,
+          "memory": 1024,
+          "environment": {
+            "AUTO_FIX_BOT_LOG_LEVEL": "info"
+          }
+        },
+        "gcp": {
+          "enabled": true,
+          "region": "us-central1",
+          "function_name": "auto-fix-bot-delegate",
+          "timeout": 300,
+          "memory": 1024,
+          "environment": {
+            "AUTO_FIX_BOT_LOG_LEVEL": "info"
+          }
+        },
+        "azure": {
+          "enabled": true,
+          "region": "eastus",
+          "function_name": "auto-fix-bot-delegate",
+          "timeout": 300,
+          "memory": 1024,
+          "environment": {
+            "AUTO_FIX_BOT_LOG_LEVEL": "info"
+          }
+        }
+      },
+      "routing": {
+        "strategy": "weighted",
+        "weights": {
+          "aws": 40,
+          "gcp": 35,
+          "azure": 25
+        },
+        "rules": [
+          {
+            "task_type": "code_analysis",
+            "provider": "aws"
+          },
+          {
+            "task_type": "auto_fix",
+            "provider": "gcp"
+          }
+        ]
+      },
+      "monitoring": {
+        "enabled": true,
+        "health_check": {
+          "enabled": true,
+          "interval": 30,
+          "timeout": 10,
+          "unhealthy_threshold": 3
+        },
+        "metrics": {
+          "enabled": true,
+          "interval": 60
+        }
+      },
+      "security": {
+        "authentication": "oauth2",
+        "authorization": "rbac",
+        "allowed_ips": [
+          "10.0.0.0/8"
+        ]
+      },
+      "failover": {
+        "enabled": true,
+        "retry_attempts": 3,
+        "retry_delay": 1000,
+        "fallback_provider": "aws"
+      }
+    }
+  },
+  
+  "assertions": {
+    "schema_valid": true,
+    "required_fields_present": true,
+    "all_providers_configured": true,
+    "routing_weights_sum_100": true,
+    "monitoring_enabled": true,
+    "security_configured": true
+  }
+}

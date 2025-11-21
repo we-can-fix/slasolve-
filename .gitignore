@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build artifacts
+dist/
+build/
+*.log
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MCP Server logs
+mcp-servers/logs/
+.github/agents/logs/
+.github/agents/metrics/
+
+# Temporary files
+/tmp/
+*.tmp

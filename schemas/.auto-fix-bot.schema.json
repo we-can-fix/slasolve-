@@ -1,0 +1,466 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://auto-fix-bot.dev/schemas/auto-fix-bot/v1.0.0",
+  "title": "Auto-Fix Bot Configuration Schema",
+  "description": "JSON Schema for Auto-Fix Bot configuration file (.auto-fix-bot.yml)",
+  "type": "object",
+  "required": [
+    "project",
+    "analysis",
+    "auto_fix",
+    "security_scan",
+    "testing"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "description": "配置文件元數據",
+      "required": ["schema_version", "created_at", "updated_at"],
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$",
+          "description": "Schema 版本號"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date",
+          "description": "創建日期"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date",
+          "description": "更新日期"
+        },
+        "author": {
+          "type": "string",
+          "description": "配置作者"
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "purpose": {
+              "type": "string",
+              "description": "驗證目的"
+            },
+            "required_checks": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "必需的檢查項"
+            }
+          }
+        },
+        "quality": {
+          "type": "object",
+          "properties": {
+            "completeness": {
+              "type": "string",
+              "description": "完整性說明"
+            },
+            "consistency": {
+              "type": "string",
+              "description": "一致性說明"
+            },
+            "maintainability": {
+              "type": "string",
+              "description": "可維護性說明"
+            }
+          }
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "description": "項目配置",
+      "required": ["name", "repository"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "項目名稱"
+        },
+        "repository": {
+          "type": "string",
+          "format": "uri",
+          "description": "項目倉庫 URL"
+        },
+        "language": {
+          "type": "string",
+          "description": "主要編程語言"
+        },
+        "framework": {
+          "type": "string",
+          "description": "使用的框架"
+        }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "description": "代碼分析配置",
+      "required": ["enabled", "rules"],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "是否啟用代碼分析"
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/analysisRule"
+          },
+          "description": "分析規則列表"
+        }
+      }
+    },
+    "auto_fix": {
+      "type": "object",
+      "description": "自動修復配置",
+      "required": ["enabled", "types"],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "是否啟用自動修復"
+        },
+        "types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "syntax_errors",
+              "import_optimization",
+              "code_style",
+              "security_fixes",
+              "performance_optimization",
+              "test_fixes"
+            ]
+          },
+          "description": "自動修復類型"
+        },
+        "strategy": {
+          "type": "string",
+          "enum": ["conservative", "moderate", "aggressive"],
+          "default": "moderate",
+          "description": "修復策略"
+        },
+        "max_changes_per_pr": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 10,
+          "description": "每個 PR 的最大修改數量"
+        }
+      }
+    },
+    "security_scan": {
+      "type": "object",
+      "description": "安全掃描配置",
+      "required": ["enabled"],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "是否啟用安全掃描"
+        },
+        "vulnerability_threshold": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "default": "medium",
+          "description": "漏洞閾值"
+        },
+        "dependency_check": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否檢查依賴項漏洞"
+        },
+        "code_scan": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否進行代碼安全掃描"
+        },
+        "secret_detection": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否檢測敏感信息洩漏"
+        }
+      }
+    },
+    "testing": {
+      "type": "object",
+      "description": "測試配置",
+      "required": ["framework"],
+      "properties": {
+        "framework": {
+          "type": "string",
+          "description": "測試框架名稱"
+        },
+        "coverage_threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 80,
+          "description": "代碼覆蓋率閾值"
+        },
+        "run_tests_before_fix": {
+          "type": "boolean",
+          "default": true,
+          "description": "修復前是否運行測試"
+        },
+        "run_tests_after_fix": {
+          "type": "boolean",
+          "default": true,
+          "description": "修復後是否運行測試"
+        }
+      }
+    },
+    "integrations": {
+      "type": "object",
+      "description": "集成配置",
+      "properties": {
+        "github": {
+          "$ref": "#/$defs/githubIntegration"
+        },
+        "gitlab": {
+          "$ref": "#/$defs/gitlabIntegration"
+        },
+        "bitbucket": {
+          "$ref": "#/$defs/bitbucketIntegration"
+        },
+        "jira": {
+          "$ref": "#/$defs/jiraIntegration"
+        }
+      }
+    },
+    "notifications": {
+      "type": "object",
+      "description": "通知配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否啟用通知"
+        },
+        "channels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["email", "slack", "webhook"]
+          },
+          "description": "通知渠道"
+        },
+        "slack_webhook": {
+          "type": "string",
+          "format": "uri",
+          "description": "Slack Webhook URL"
+        },
+        "email_recipients": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "email"
+          },
+          "description": "郵件接收者列表"
+        }
+      }
+    },
+    "cloud_delegation": {
+      "type": "object",
+      "description": "雲端委派配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否啟用雲端委派"
+        },
+        "config_file": {
+          "type": "string",
+          "default": "cloud-agent-delegation.yml",
+          "description": "雲端委派配置文件路徑"
+        }
+      }
+    },
+    "logging": {
+      "type": "object",
+      "description": "日誌配置",
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["debug", "info", "warning", "error"],
+          "default": "info",
+          "description": "日誌級別"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["json", "text"],
+          "default": "json",
+          "description": "日誌格式"
+        },
+        "output": {
+          "type": "string",
+          "enum": ["console", "file", "both"],
+          "default": "both",
+          "description": "日誌輸出位置"
+        }
+      }
+    },
+    "cache": {
+      "type": "object",
+      "description": "緩存配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否啟用緩存"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 86400,
+          "default": 3600,
+          "description": "緩存過期時間（秒）"
+        },
+        "strategy": {
+          "type": "string",
+          "enum": ["memory", "redis", "file"],
+          "default": "memory",
+          "description": "緩存策略"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "analysisRule": {
+      "type": "object",
+      "required": ["name", "enabled"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": [
+            "complexity",
+            "security",
+            "performance",
+            "style",
+            "duplication",
+            "maintainability"
+          ],
+          "description": "規則名稱"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "是否啟用該規則"
+        },
+        "threshold": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "description": "閾值"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "default": "medium",
+          "description": "嚴重程度"
+        }
+      }
+    },
+    "githubIntegration": {
+      "type": "object",
+      "description": "GitHub 集成配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否啟用 GitHub 集成"
+        },
+        "auto_create_pr": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否自動創建 PR"
+        },
+        "pr_labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "PR 標籤"
+        },
+        "assignees": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "PR 指派人"
+        }
+      }
+    },
+    "gitlabIntegration": {
+      "type": "object",
+      "description": "GitLab 集成配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否啟用 GitLab 集成"
+        },
+        "auto_create_mr": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否自動創建 MR"
+        },
+        "mr_labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "MR 標籤"
+        }
+      }
+    },
+    "bitbucketIntegration": {
+      "type": "object",
+      "description": "Bitbucket 集成配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否啟用 Bitbucket 集成"
+        },
+        "auto_create_pr": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否自動創建 PR"
+        }
+      }
+    },
+    "jiraIntegration": {
+      "type": "object",
+      "description": "JIRA 集成配置",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否啟用 JIRA 集成"
+        },
+        "project_key": {
+          "type": "string",
+          "description": "JIRA 項目鍵"
+        },
+        "auto_create_issue": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否自動創建問題"
+        },
+        "issue_type": {
+          "type": "string",
+          "enum": ["Bug", "Task", "Story"],
+          "default": "Bug",
+          "description": "問題類型"
+        }
+      }
+    }
+  }
+}

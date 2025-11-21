@@ -1,0 +1,432 @@
+# Auto-Fix Bot Configuration File
+# 項目配置文件
+#
+# Metadata & Quality Baseline (第一層：元數據與質量基線)
+# ============================================================
+# version: 配置文件格式版本
+# schema_validation: 第二層將引入 JSON Schema 驗證
+# test_vectors: 第二層將添加測試向量
+# lifecycle_hooks: 第三層將實現生命週期鉤子
+#
+# 設計理念：
+# - 製程質量優先：每個配置都經過深思熟慮
+# - 圖譜式疊加：在此基線上層層增強
+# - 可觀察驗證：每次變更都可見、可測試
+# - 保持整體性：避免碎片化配置
+
+version: "1.0"
+
+# 配置元數據 (Configuration Metadata)
+metadata:
+  schema_version: "1.0"
+  created_at: "2025-11-21"
+  updated_at: "2025-11-21"
+  author: "Auto-Fix Bot Team"
+  
+  # 驗證意圖 (Validation Intent)
+  validation:
+    purpose: "確保 Auto-Fix Bot 項目配置的正確性和完整性"
+    required_checks:
+      - "rule configuration validation"
+      - "path exclusion verification"
+      - "integration settings check"
+    
+  # 質量目標 (Quality Objectives)  
+  quality:
+    completeness: "所有分析規則和修復策略已定義"
+    consistency: "配置與項目需求保持一致"
+    maintainability: "易於理解和維護"
+
+project:
+  name: "slasolve"
+  description: "SLA Solve - Auto-Fix Bot Integration"
+  language: "multi-language"
+  repository: "https://github.com/we-can-fix/slasolve"
+
+# 基本設置
+settings:
+  enabled: true
+  auto_fix: true
+  auto_commit: false
+  create_pr: true
+  branch_prefix: "auto-fix/"
+  
+# 分析配置 (Analysis Configuration)
+# ============================================================
+# 驗證要點 (Validation Points):
+# - 每個 rule 必須有 name 和 enabled 屬性
+# - threshold 值必須為正整數
+# - severity 列表不能為空
+#
+# 質量目標 (Quality Objectives):
+# - 全面性：覆蓋代碼質量的所有關鍵維度
+# - 平衡性：避免過度嚴格或過度寬鬆
+# - 可操作性：每個規則都有明確的修復指引
+analysis:
+  enabled: true
+  
+  # 分析規則 (Analysis Rules)
+  # 設計理念：多維度代碼質量檢查
+  rules:
+    # 複雜度分析 (Complexity Analysis)
+    # 驗證：threshold > 0，典型範圍 5-20
+    # 目的：識別過度複雜的函數和類
+    - name: "complexity"
+      enabled: true
+      threshold: 10  # 循環複雜度閾值
+      
+    # 安全性分析 (Security Analysis)
+    # 驗證：severity 列表不能為空
+    # 目的：檢測常見安全漏洞 (SQL注入、XSS、CSRF等)
+    - name: "security"
+      enabled: true
+      severity: ["critical", "high", "medium"]
+      
+    # 性能分析 (Performance Analysis)
+    # 驗證：至少啟用一種檢查類型
+    # 目的：優化算法效率和記憶體使用
+    - name: "performance"
+      enabled: true
+      check_algorithms: true  # 檢查算法時間複雜度
+      check_memory: true      # 檢查記憶體洩漏風險
+      
+    # 代碼風格 (Code Style)
+    # 驗證：enforce_standard 必須為布爾值
+    # 目的：統一代碼風格，提高可讀性
+    - name: "style"
+      enabled: true
+      enforce_standard: true
+      
+    # 文檔完整性 (Documentation Completeness)
+    # 驗證：require_docstrings 必須為布爾值
+    # 目的：確保所有公共 API 都有文檔
+    - name: "documentation"
+      enabled: true
+      require_docstrings: true
+      
+  # 排除路徑
+  exclude:
+    - "node_modules/"
+    - "dist/"
+    - "build/"
+    - "*.min.js"
+    - "*.zip"
+    - ".git/"
+    
+  # 文件類型
+  include:
+    - "*.js"
+    - "*.ts"
+    - "*.py"
+    - "*.java"
+    - "*.go"
+    - "*.rs"
+    - "*.cpp"
+    - "*.c"
+    - "*.cs"
+    - "*.rb"
+    - "*.php"
+
+# 修復配置
+fix:
+  enabled: true
+  
+  # 自動修復類型
+  auto_fix_types:
+    - "syntax_errors"
+    - "import_errors"
+    - "format_issues"
+    - "simple_logic_errors"
+    
+  # 修復策略
+  strategy:
+    conservative: false  # 保守模式，只修復確定的問題
+    aggressive: true    # 積極模式，嘗試修復更多問題
+    
+  # 測試驗證
+  verify_with_tests: true
+  run_tests_after_fix: true
+  
+  # PR 設置
+  pull_request:
+    enabled: true
+    title_prefix: "[Auto-Fix]"
+    add_labels: ["auto-fix", "bot"]
+    assign_reviewers: true
+    reviewers: []
+
+# 性能優化
+optimization:
+  enabled: true
+  
+  areas:
+    - "algorithms"
+    - "memory_usage"
+    - "database_queries"
+    - "network_calls"
+    - "concurrency"
+    
+  suggestions_only: false  # false 表示自動應用優化
+
+# 安全掃描
+security:
+  enabled: true
+  
+  # 掃描類型
+  scan_types:
+    - "sql_injection"
+    - "xss"
+    - "csrf"
+    - "sensitive_data"
+    - "dependency_vulnerabilities"
+    
+  # 嚴重程度
+  severity_threshold: "medium"  # low, medium, high, critical
+  
+  # 依賴掃描
+  dependency_scan:
+    enabled: true
+    check_npm: true
+    check_pip: true
+    check_maven: true
+    check_cargo: true
+
+# 代碼質量
+code_quality:
+  enabled: true
+  
+  # 質量指標
+  metrics:
+    - "cyclomatic_complexity"
+    - "maintainability_index"
+    - "code_duplication"
+    - "test_coverage"
+    
+  # 質量門檻
+  thresholds:
+    complexity: 10
+    duplication: 5  # 百分比
+    test_coverage: 80  # 百分比
+    maintainability: 65  # 分數
+
+# 測試配置
+testing:
+  enabled: true
+  
+  # 測試框架
+  frameworks:
+    javascript: "jest"
+    python: "pytest"
+    java: "junit"
+    go: "testing"
+    
+  # 自動生成測試
+  auto_generate: false
+  
+  # 測試覆蓋率
+  coverage:
+    enabled: true
+    target: 80
+    fail_under: 60
+
+# 文檔生成
+documentation:
+  enabled: true
+  
+  # 文檔類型
+  types:
+    - "api_docs"
+    - "code_comments"
+    - "readme"
+    
+  # 文檔格式
+  format: "markdown"
+  
+  # 自動更新
+  auto_update: true
+
+# 通知配置
+notifications:
+  enabled: true
+  
+  # Slack 通知
+  # To enable: Set enabled=true and configure AUTO_FIX_BOT_SLACK_WEBHOOK_URL environment variable
+  slack:
+    enabled: false
+    webhook_url: "${AUTO_FIX_BOT_SLACK_WEBHOOK_URL}"
+    channel: "#auto-fix-bot"
+    notify_on:
+      - "fix_completed"
+      - "security_issue"
+      - "pr_created"
+      
+  # Email 通知
+  # To enable: Set enabled=true and configure SMTP settings
+  email:
+    enabled: false
+    smtp_server: "smtp.example.com"
+    smtp_port: 587
+    from: "auto-fix-bot@example.com"
+    to: []  # Add recipient email addresses here
+    notify_on:
+      - "security_issue"
+      - "critical_error"
+      
+  # GitHub 通知
+  github:
+    enabled: true
+    notify_on:
+      - "pr_created"
+      - "fix_completed"
+
+# 雲端委派
+cloud_delegation:
+  enabled: true
+  config_file: "cloud-agent-delegation.yml"
+  
+  # 任務委派設置
+  delegate_tasks:
+    - "large_codebase_analysis"
+    - "batch_fixes"
+    - "comprehensive_security_scan"
+    
+  # 並行處理
+  parallel_processing:
+    enabled: true
+    max_workers: 10
+
+# 集成配置
+integrations:
+  # GitHub
+  github:
+    enabled: true
+    token: "${GITHUB_TOKEN}"
+    
+  # GitLab
+  gitlab:
+    enabled: false
+    token: "${GITLAB_TOKEN}"
+    
+  # Bitbucket
+  bitbucket:
+    enabled: false
+    username: "${BITBUCKET_USERNAME}"
+    password: "${BITBUCKET_PASSWORD}"
+    
+  # JIRA
+  jira:
+    enabled: false
+    url: "https://your-domain.atlassian.net"
+    username: "${JIRA_USERNAME}"
+    api_token: "${JIRA_API_TOKEN}"
+
+# 日誌配置
+logging:
+  enabled: true
+  level: "info"  # debug, info, warn, error
+  format: "json"
+  output: "stdout"
+  
+  # 日誌文件
+  file:
+    enabled: true
+    path: "./logs/auto-fix-bot.log"
+    max_size: "10MB"
+    max_files: 5
+    rotation: "daily"
+
+# 緩存配置
+cache:
+  enabled: true
+  type: "file"  # file, redis, memory
+  ttl: 3600  # 秒
+  path: "./.auto-fix-bot-cache"
+
+# 高級配置
+advanced:
+  # 並發限制
+  concurrency:
+    max_parallel_tasks: 5
+    max_parallel_files: 10
+    
+  # 超時設置
+  timeouts:
+    analysis: 300  # 秒
+    fix: 180
+    test: 300
+    
+  # 重試策略
+  retry:
+    enabled: true
+    max_attempts: 3
+    backoff: "exponential"
+    
+  # 性能調優
+  performance:
+    use_cache: true
+    incremental_analysis: true
+    parallel_processing: true
+
+# 實驗性功能
+experimental:
+  # AI 輔助修復
+  ai_assisted_fixes:
+    enabled: false
+    model: "gpt-4"
+    
+  # 預測性分析
+  predictive_analysis:
+    enabled: false
+    
+  # 自動重構
+  auto_refactoring:
+    enabled: false
+
+# 自定義規則
+custom_rules:
+  enabled: true
+  rules_directory: "./.auto-fix-bot/rules"
+
+# 插件配置
+plugins:
+  enabled: true
+  plugins_directory: "./.auto-fix-bot/plugins"
+  
+  # 已啟用的插件
+  active_plugins: []
+
+# 報告配置
+reporting:
+  enabled: true
+  
+  # 報告格式
+  formats:
+    - "html"
+    - "json"
+    - "markdown"
+    
+  # 報告輸出
+  output_directory: "./reports"
+  
+  # 報告內容
+  include:
+    - "analysis_summary"
+    - "fixes_applied"
+    - "security_issues"
+    - "performance_metrics"
+    - "code_quality_metrics"
+
+# 環境變量
+environment:
+  development:
+    auto_fix: false
+    verbose: true
+    
+  staging:
+    auto_fix: true
+    create_pr: true
+    
+  production:
+    auto_fix: true
+    create_pr: true
+    notify_on_error: true

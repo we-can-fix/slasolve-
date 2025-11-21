@@ -1,0 +1,40 @@
+{
+  "test_metadata": {
+    "name": "invalid_missing_provider",
+    "description": "Configuration missing required providers field",
+    "category": "invalid_schema",
+    "expected_result": "fail",
+    "expected_error": "Required property 'providers' is missing",
+    "created_at": "2025-11-21T10:00:00Z",
+    "created_by": "test-automation"
+  },
+  
+  "payload": {
+    "metadata": {
+      "name": "cloud-agent-delegation",
+      "version": "1.0.0",
+      "description": "Invalid configuration"
+    },
+    
+    "routing": {
+      "default_provider": "aws",
+      "load_balancing": {
+        "enabled": false
+      }
+    },
+    
+    "monitoring": {
+      "enabled": true,
+      "health_check": {
+        "enabled": true,
+        "interval": "30s"
+      }
+    }
+  },
+  
+  "assertions": {
+    "schema_valid": false,
+    "error_type": "required_property_missing",
+    "error_path": "providers"
+  }
+}

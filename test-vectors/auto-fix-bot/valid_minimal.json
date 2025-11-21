@@ -1,0 +1,40 @@
+{
+  "test_metadata": {
+    "name": "valid_minimal_bot_config",
+    "description": "最小可行的 Auto-Fix Bot 配置",
+    "category": "valid_minimal",
+    "expected_result": "pass",
+    "created_at": "2025-11-21T10:00:00Z"
+  },
+  
+  "payload": {
+    "project": {
+      "name": "test-project",
+      "language": "javascript",
+      "framework": "node"
+    },
+    "analysis": {
+      "enabled": true,
+      "rules": {
+        "complexity": {
+          "enabled": true,
+          "threshold": 10
+        }
+      }
+    },
+    "auto_fix": {
+      "enabled": true,
+      "types": ["syntax_errors"]
+    },
+    "delegation": {
+      "enabled": false
+    }
+  },
+  
+  "assertions": {
+    "schema_valid": true,
+    "required_fields_present": true,
+    "project_configured": true,
+    "analysis_enabled": true
+  }
+}
