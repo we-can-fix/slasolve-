@@ -10,6 +10,7 @@ Welcome to the SLASolve documentation. This directory contains comprehensive gui
 - [System Architecture Design](./architecture/SYSTEM_ARCHITECTURE.md) - Four-layer microservices architecture
 - [Deployment & Infrastructure](./architecture/DEPLOYMENT_INFRASTRUCTURE.md) - Docker, Kubernetes, CI/CD setup
 - [Code Quality Checks](./architecture/CODE_QUALITY_CHECKS.md) - Quality tools configuration and implementation
+- [Security & Config Checks](./architecture/SECURITY_CONFIG_CHECKS.md) ⭐ - Phase 2 security scanning and validation
 - [Configuration Files & Scripts](./architecture/configuration/) - Ready-to-use configurations
 
 ### 🚀 Getting Started

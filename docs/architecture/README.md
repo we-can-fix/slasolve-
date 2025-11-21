@@ -28,14 +28,24 @@
    - 配置驗證
    - 報告生成與聚合
 
+4. **[安全檢測與配置文件檢查](./SECURITY_CONFIG_CHECKS.md)** ⭐ 新增
+   - 第二階段部署文檔
+   - Bandit Python安全檢查
+   - OWASP Dependency Check整合
+   - 配置文件驗證系統
+   - 自動化集成腳本
+   - CI/CD整合（GitHub Actions & Jenkins）
+
 ### 配置文件
 
-4. **[配置文件與腳本](./configuration/)**
+5. **[配置文件與腳本](./configuration/)**
    - Docker配置
    - Jenkins Pipeline
    - Kubernetes部署清單
    - 監控配置
    - 執行腳本
+   - Python安全工具（新增）
+   - Phase 2檢查腳本（新增）
 
 ## 🎯 快速開始
 
