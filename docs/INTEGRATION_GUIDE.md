@@ -345,9 +345,12 @@ services:
 
 ### GitHub Webhook
 
+> **注意：** 以下示例中的 `'autofix-bot'` 為佔位符，請根據實際情況替換為真實的 npm 套件名稱或本地模組路徑。如果尚未發布，請聯繫維護者獲取安裝方式。
+
 ```javascript
 // webhook-handler.js
 const express = require('express');
+// ⚠️ 'autofix-bot' 為佔位符，請替換為實際可用的包名或路徑
 const { AutoFixBot } = require('autofix-bot');
 
 const app = express();
