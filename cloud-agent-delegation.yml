@@ -315,12 +315,13 @@ security:
     
   # 網絡安全
   network:
-    # SECURITY WARNING: Restrict IP ranges in production
-    # Example: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    # PRODUCTION NOTE: These are example private network ranges.
+    # Replace with your actual internal network ranges before deploying to production.
+    # For development/testing, these private ranges provide basic security.
     allowed_ips:
-      - "10.0.0.0/8"      # Private network range
-      - "172.16.0.0/12"   # Private network range
-      - "192.168.0.0/16"  # Private network range
+      - "10.0.0.0/8"      # Private network range - replace with your actual range
+      - "172.16.0.0/12"   # Private network range - replace with your actual range
+      - "192.168.0.0/16"  # Private network range - replace with your actual range
     rate_limiting:
       enabled: true
       requests_per_minute: 1000

@@ -246,39 +246,43 @@
                 transform: scale(1.05);
             }
         }
+
+        .capability-item.clicked {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🤖 Auto-Fix Bot</h1>
+            <h1><span aria-label="Robot representing Auto-Fix Bot">🤖</span> Auto-Fix Bot</h1>
             <p class="tagline">多功能開發助手 - 高效率、快速響應的智能開發夥伴</p>
         </div>
 
         <div class="efficiency-metrics">
             <div class="metric-card">
-                <div class="icon">⚡</div>
+                <div class="icon" aria-label="Lightning bolt representing response speed">⚡</div>
                 <h3>響應速度</h3>
                 <div class="value pulse">&lt;3s</div>
                 <div class="label">平均響應時間</div>
             </div>
 
             <div class="metric-card">
-                <div class="icon">🎯</div>
+                <div class="icon" aria-label="Target representing fix success rate">🎯</div>
                 <h3>修復成功率</h3>
                 <div class="value pulse">98%</div>
                 <div class="label">自動修復準確度</div>
             </div>
 
             <div class="metric-card">
-                <div class="icon">🚀</div>
+                <div class="icon" aria-label="Rocket representing deployment efficiency">🚀</div>
                 <h3>部署效率</h3>
                 <div class="value pulse">10x</div>
                 <div class="label">傳統方式的10倍速度</div>
             </div>
 
             <div class="metric-card">
-                <div class="icon">💡</div>
+                <div class="icon" aria-label="Light bulb representing language support">💡</div>
                 <h3>支援語言</h3>
                 <div class="value pulse">20+</div>
                 <div class="label">程式語言與框架</div>
@@ -424,17 +428,17 @@
         // 添加互動效果
         document.querySelectorAll('.capability-item').forEach(item => {
             item.addEventListener('click', function() {
-                this.style.transform = 'scale(1.1)';
+                this.classList.add('clicked');
                 setTimeout(() => {
-                    this.style.transform = 'scale(1)';
+                    this.classList.remove('clicked');
                 }, 200);
             });
             item.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) {
                     e.preventDefault();
-                    this.style.transform = 'scale(1.1)';
+                    this.classList.add('clicked');
                     setTimeout(() => {
-                        this.style.transform = 'scale(1)';
+                        this.classList.remove('clicked');
                     }, 200);
                 }
             });
