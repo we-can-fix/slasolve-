@@ -155,12 +155,34 @@ export class ProvenanceController {
 #### 2. Middleware Pattern
 ```typescript
 // ✅ Recommended: Use middleware for cross-cutting concerns
+// Example: Realistic logging middleware with trace ID, timing, sanitization, and log levels
+import { Request, Response, NextFunction } from 'express';
+import pino from 'pino';
+
+const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
+
 export const loggingMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
 ): void => {
-  console.log(`${req.method} ${req.path}`);
+  const start = process.hrtime.bigint();
+  const traceId = req.headers['x-trace-id'] || req.id || 'unknown';
+  // Simple request sanitization: omit sensitive headers
+  const sanitizedHeaders = { ...req.headers };
+  delete sanitizedHeaders['authorization'];
+
+  res.on('finish', () => {
+    const durationMs = Number(process.hrtime.bigint() - start) / 1_000_000;
+    logger.info({
+      traceId,
+      method: req.method,
+      path: req.path,
+      status: res.statusCode,
+      durationMs,
+      headers: sanitizedHeaders,
+    }, 'Request completed');
+  });
   next();
 };
 ```
