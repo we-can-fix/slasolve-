@@ -1,0 +1,98 @@
+# System Architecture Documentation File Manifest
+# Generated: 2025-11-21
+
+## Main Documentation Files (Markdown)
+
+### Core Architecture Documents
+1. SYSTEM_ARCHITECTURE.md (220 lines)
+   - 系統架構設計 (System Architecture Design)
+   - Four-layer architecture overview
+   - Technology stack and deployment modes
+   - Security and performance considerations
+
+2. DEPLOYMENT_INFRASTRUCTURE.md (872 lines)
+   - 環境準備與基礎設施 (Environment Preparation & Infrastructure)
+   - Docker containerization setup
+   - CI/CD pipeline configurations
+   - Kubernetes deployment guides
+   - Monitoring setup (Prometheus, Grafana)
+
+3. CODE_QUALITY_CHECKS.md (980 lines)
+   - 代碼品質檢查實現 (Code Quality Check Implementation)
+   - SonarQube static analysis configuration
+   - ESLint/Prettier format checking
+   - Security scanning implementations
+   - Report generation systems
+
+### Navigation and Index Files
+4. README.md (273 lines)
+   - Main architecture documentation index
+   - Quick start guides by role
+   - Documentation overview
+
+5. configuration/README.md (263 lines)
+   - Configuration files and scripts documentation
+   - Usage instructions for all config files
+   - Deployment procedures
+
+## Configuration Files
+
+### Docker
+- configuration/docker/docker-compose.yml
+  Complete Docker Compose setup with SonarQube, PostgreSQL, Redis, Jenkins
+
+- configuration/docker/Dockerfile.code-checker
+  Custom container with all checking tools pre-installed
+
+### Jenkins
+- configuration/jenkins/Jenkinsfile.code-quality
+  Complete Jenkins Pipeline for code quality checks
+
+### Kubernetes
+- configuration/kubernetes/k8s-sonarqube.yaml
+  Complete K8s manifests: namespace, deployments, services, secrets
+
+### Monitoring
+- configuration/monitoring/prometheus-config.yaml
+  Prometheus scrape configurations for all services
+
+### Example Configurations
+- configuration/.eslintrc.example.js
+  Production-ready ESLint configuration
+
+- configuration/.prettierrc.example.json
+  Prettier formatting rules
+
+- configuration/sonar-project.properties.example
+  SonarQube project configuration template
+
+## Executable Scripts
+
+### Automation Scripts (all executable)
+- configuration/scripts/format-check.sh
+  Automated code format checking (ESLint, Prettier, Black, Flake8)
+
+- configuration/scripts/security-scan.sh
+  Security vulnerability scanning (npm audit, Safety, Bandit, OWASP)
+
+- configuration/scripts/config-check.sh
+  Configuration file validation (JSON, YAML, TypeScript)
+
+## Total Statistics
+- Documentation Files: 5 markdown files
+- Total Documentation Lines: 2,608 lines
+- Configuration Files: 8 files
+- Executable Scripts: 3 files
+- Example Configs: 3 files
+- Total Files: 19 files
+
+## Language
+All documentation is written in Traditional Chinese (繁體中文) with English technical terms where appropriate.
+
+## Usage
+1. Start with README.md for navigation
+2. Read SYSTEM_ARCHITECTURE.md for design overview
+3. Follow DEPLOYMENT_INFRASTRUCTURE.md for deployment
+4. Configure using CODE_QUALITY_CHECKS.md
+5. Use configuration/ files and scripts for implementation
+
