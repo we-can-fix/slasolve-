@@ -1,0 +1,123 @@
+// Jenkinsfile.code-quality
+pipeline {
+    agent any
+    
+    tools {
+        nodejs 'NodeJS-16'
+        maven 'Maven-3.8'
+    }
+    
+    environment {
+        SONAR_TOKEN = credentials('sonar-token')
+        SONAR_HOST_URL = 'http://sonarqube:9000'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                script {
+                    env.GIT_COMMIT_SHORT = sh(
+                        script: "git rev-parse --short HEAD",
+                        returnStdout: true
+                    ).trim()
+                }
+            }
+        }
+        
+        stage('Install Dependencies') {
+            parallel {
+                stage('Node Dependencies') {
+                    when { 
+                        anyOf {
+                            fileExists('package.json')
+                            fileExists('yarn.lock')
+                        }
+                    }
+                    steps {
+                        sh 'npm install'
+                    }
+                }
+                stage('Python Dependencies') {
+                    when { fileExists('requirements.txt') }
+                    steps {
+                        sh 'pip install -r requirements.txt'
+                    }
+                }
+                stage('Java Dependencies') {
+                    when { fileExists('pom.xml') }
+                    steps {
+                        sh 'mvn clean compile'
+                    }
+                }
+            }
+        }
+        
+        stage('Code Quality Checks') {
+            parallel {
+                stage('Static Analysis') {
+                    steps {
+                        script {
+                            sh '''
+                                sonar-scanner \
+                                    -Dsonar.projectKey=${JOB_NAME} \
+                                    -Dsonar.sources=. \
+                                    -Dsonar.host.url=${SONAR_HOST_URL} \
+                                    -Dsonar.login=${SONAR_TOKEN}
+                            '''
+                        }
+                    }
+                }
+                stage('Security Scan') {
+                    steps {
+                        sh '/opt/scripts/security-scan.sh'
+                    }
+                }
+                stage('Format Check') {
+                    steps {
+                        sh '/opt/scripts/format-check.sh'
+                    }
+                }
+                stage('Configuration Check') {
+                    steps {
+                        sh '/opt/scripts/config-check.sh'
+                    }
+                }
+            }
+        }
+        
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'reports',
+                reportFiles: 'index.html',
+                reportName: 'Code Quality Report'
+            ])
+        }
+        failure {
+            emailext (
+                subject: "Code Quality Check Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
+                body: """
+                    Build failed for ${env.JOB_NAME} - ${env.BUILD_NUMBER}
+                    
+                    Check console output at: ${env.BUILD_URL}
+                    
+                    Git Commit: ${env.GIT_COMMIT_SHORT}
+                """,
+                to: "${env.CHANGE_AUTHOR_EMAIL}"
+            )
+        }
+    }
+}

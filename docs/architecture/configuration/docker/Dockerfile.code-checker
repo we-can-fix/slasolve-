@@ -1,0 +1,36 @@
+FROM node:16-alpine
+
+# 安裝Python和相關工具
+RUN apk add --no-cache python3 py3-pip openjdk11 wget unzip bash
+
+# 安裝前端檢查工具
+RUN npm install -g \
+    eslint \
+    prettier \
+    @typescript-eslint/parser \
+    @typescript-eslint/eslint-plugin \
+    stylelint \
+    jshint
+
+# 安裝Python檢查工具
+RUN pip3 install \
+    pylint \
+    flake8 \
+    black \
+    mypy \
+    bandit \
+    safety
+
+# 安裝SonarScanner
+RUN wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.zip \
+    && unzip sonar-scanner-cli-4.8.0.zip \
+    && mv sonar-scanner-4.8.0 /opt/sonar-scanner \
+    && rm sonar-scanner-cli-4.8.0.zip \
+    && ln -s /opt/sonar-scanner/bin/sonar-scanner /usr/local/bin/
+
+# 複製檢查腳本
+COPY scripts/ /opt/scripts/
+RUN chmod +x /opt/scripts/*.sh
+
+WORKDIR /workspace
+CMD ["/bin/bash"]

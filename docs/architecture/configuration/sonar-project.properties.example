@@ -1,0 +1,42 @@
+# sonar-project.properties - SonarQube configuration example
+
+# Project information
+sonar.projectKey=code-quality-system
+sonar.projectName=Code Quality System
+sonar.projectVersion=1.0
+sonar.sourceEncoding=UTF-8
+
+# Source code directories
+sonar.sources=src,lib,app
+sonar.tests=test,spec,__tests__
+
+# Exclusions
+sonar.exclusions=**/node_modules/**,**/vendor/**,**/*.min.js,**/dist/**,**/build/**,**/coverage/**
+
+# Language specific configurations
+# JavaScript/TypeScript
+sonar.javascript.lcov.reportPaths=coverage/lcov.info
+sonar.typescript.lcov.reportPaths=coverage/lcov.info
+
+# Python
+sonar.python.coverage.reportPaths=coverage.xml
+sonar.python.version=3.9
+
+# Java
+sonar.java.coveragePlugin=jacoco
+sonar.jacoco.reportPaths=target/jacoco.exec
+sonar.java.binaries=target/classes
+
+# Quality Gate
+sonar.qualitygate.wait=true
+sonar.qualitygate.timeout=300
+
+# Code coverage thresholds
+sonar.coverage.exclusions=**/*test*/**,**/*mock*/**
+
+# Duplication
+sonar.cpd.exclusions=**/*test*/**
+
+# Analysis parameters
+sonar.scm.provider=git
+sonar.scm.disabled=false
