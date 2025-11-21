@@ -3,7 +3,7 @@
 ## 📋 Project Overview
 
 **Project Name:** SLASolve  
-**Goal:** A modern platform for managing Service Level Agreements with SLSA provenance verification  
+**Goal:** Auto-Fix Bot – Intelligent Development Assistant for code analysis and automatic fixing, with SLSA provenance capabilities  
 **Tech Stack:** TypeScript, Node.js, Express, Jest, Zod, Sigstore  
 **License:** MIT
 
