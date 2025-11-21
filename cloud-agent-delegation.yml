@@ -236,7 +236,7 @@ alerts:
   channels:
     # Slack 通知
     - type: "slack"
-      webhook_url: "${SLACK_WEBHOOK_URL}"
+      webhook_url: "${AUTO_FIX_BOT_SLACK_WEBHOOK_URL}"
       channel: "#auto-fix-bot-alerts"
       
     # Email 通知
@@ -250,7 +250,7 @@ alerts:
         
     # PagerDuty 集成
     - type: "pagerduty"
-      integration_key: "${PAGERDUTY_KEY}"
+      integration_key: "${AUTO_FIX_BOT_PAGERDUTY_KEY}"
       
   rules:
     # 高錯誤率告警
@@ -315,8 +315,12 @@ security:
     
   # 網絡安全
   network:
+    # SECURITY WARNING: Restrict IP ranges in production
+    # Example: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
     allowed_ips:
-      - "0.0.0.0/0"  # 生產環境應限制
+      - "10.0.0.0/8"      # Private network range
+      - "172.16.0.0/12"   # Private network range
+      - "192.168.0.0/16"  # Private network range
     rate_limiting:
       enabled: true
       requests_per_minute: 1000

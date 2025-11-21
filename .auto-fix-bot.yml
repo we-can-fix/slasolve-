@@ -189,9 +189,10 @@ notifications:
   enabled: true
   
   # Slack 通知
+  # To enable: Set enabled=true and configure AUTO_FIX_BOT_SLACK_WEBHOOK_URL environment variable
   slack:
     enabled: false
-    webhook_url: "${SLACK_WEBHOOK_URL}"
+    webhook_url: "${AUTO_FIX_BOT_SLACK_WEBHOOK_URL}"
     channel: "#auto-fix-bot"
     notify_on:
       - "fix_completed"
@@ -199,12 +200,13 @@ notifications:
       - "pr_created"
       
   # Email 通知
+  # To enable: Set enabled=true and configure SMTP settings
   email:
     enabled: false
     smtp_server: "smtp.example.com"
     smtp_port: 587
     from: "auto-fix-bot@example.com"
-    to: []
+    to: []  # Add recipient email addresses here
     notify_on:
       - "security_issue"
       - "critical_error"
