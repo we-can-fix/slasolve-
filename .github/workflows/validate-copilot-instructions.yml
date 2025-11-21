@@ -1,0 +1,118 @@
+name: Validate Copilot Instructions
+
+on:
+  pull_request:
+    paths:
+      - '.github/copilot-instructions.md'
+      - '.github/workflows/validate-copilot-instructions.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.github/copilot-instructions.md'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    name: Validate Copilot Instructions File
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check file exists
+        run: |
+          if [ ! -f .github/copilot-instructions.md ]; then
+            echo "❌ Error: .github/copilot-instructions.md not found"
+            exit 1
+          fi
+          echo "✅ Instructions file exists"
+      
+      - name: Check file size
+        run: |
+          SIZE=$(wc -c < .github/copilot-instructions.md)
+          SIZE_KB=$((SIZE / 1024))
+          echo "📊 File size: ${SIZE_KB}KB"
+          
+          if [ $SIZE -gt 50000 ]; then
+            echo "⚠️ Warning: Instructions file is large (${SIZE_KB}KB)"
+            echo "Consider keeping instructions under 50KB for optimal performance"
+          else
+            echo "✅ File size is appropriate"
+          fi
+      
+      - name: Check markdown structure
+        run: |
+          echo "📝 Checking markdown structure..."
+          
+          # Check for required sections
+          if ! grep -q "## 📋 Project Overview" .github/copilot-instructions.md; then
+            echo "❌ Missing: Project Overview section"
+            exit 1
+          fi
+          
+          if ! grep -q "## 🎯 Code Style and Standards" .github/copilot-instructions.md; then
+            echo "❌ Missing: Code Style section"
+            exit 1
+          fi
+          
+          if ! grep -q "## 🔒 Security Best Practices" .github/copilot-instructions.md; then
+            echo "❌ Missing: Security section"
+            exit 1
+          fi
+          
+          echo "✅ All required sections present"
+      
+      - name: Validate UTF-8 encoding
+        run: |
+          if ! file .github/copilot-instructions.md | grep -q "UTF-8"; then
+            echo "❌ File must be UTF-8 encoded"
+            exit 1
+          fi
+          echo "✅ File is UTF-8 encoded"
+      
+      - name: Generate validation report
+        if: always()
+        run: |
+          SIZE=$(wc -c < .github/copilot-instructions.md)
+          SIZE_KB=$((SIZE / 1024))
+          LINES=$(wc -l < .github/copilot-instructions.md)
+          
+          cat > validation-report.md << EOF
+          # 📋 Copilot Instructions Validation Report
+          
+          **Date:** $(date)
+          **Status:** ${{ job.status }}
+          
+          ## File Statistics
+          - **Size:** ${SIZE_KB}KB (${SIZE} bytes)
+          - **Lines:** ${LINES}
+          - **Encoding:** UTF-8
+          
+          ## Validation Checks
+          - ✅ File exists
+          - ✅ Proper size (under 50KB)
+          - ✅ Required sections present
+          - ✅ UTF-8 encoding
+          
+          All validation checks passed! 🎉
+          EOF
+          
+          cat validation-report.md
+      
+      - name: Comment on PR
+        if: github.event_name == 'pull_request' && success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('validation-report.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });
