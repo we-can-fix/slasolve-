@@ -1,0 +1,39 @@
+{
+  "cloudDelegation": {
+    "enabled": true,
+    "mode": "intelligent",
+    "agents": {
+      "maxConcurrent": 10,
+      "timeout": 300,
+      "retryAttempts": 3
+    },
+    "routing": {
+      "strategy": "load-balanced",
+      "priorities": {
+        "critical": 1,
+        "high": 2,
+        "normal": 3,
+        "low": 4
+      }
+    }
+  },
+  "logging": {
+    "level": "info",
+    "cloudDelegation": {
+      "enabled": true,
+      "includeDetails": true,
+      "output": "console,file"
+    }
+  },
+  "bot": {
+    "name": "Auto-Fix Bot",
+    "version": "1.0.0",
+    "capabilities": [
+      "code-analysis",
+      "auto-fixing",
+      "security-scanning",
+      "performance-optimization",
+      "documentation-generation"
+    ]
+  }
+}
