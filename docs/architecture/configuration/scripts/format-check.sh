@@ -32,9 +32,10 @@ fi
 # Prettier檢查
 if [ -f ".prettierrc" ] || [ -f ".prettierrc.json" ]; then
     echo "💅 Running Prettier check..."
-    npx prettier --check . \
-        --write-file-list "$REPORTS_DIR/prettier-files.txt" || \
-        PRETTIER_EXIT=$?
+    npx prettier --check . || PRETTIER_EXIT=$?
+    
+    # List files that would be reformatted
+    npx prettier --list-different . > "$REPORTS_DIR/prettier-files.txt" || true
     
     if [ ${PRETTIER_EXIT:-0} -ne 0 ]; then
         echo "❌ Prettier format issues found!"
