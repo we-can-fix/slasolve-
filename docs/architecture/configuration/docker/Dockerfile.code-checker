@@ -5,7 +5,7 @@ FROM node:16-alpine
 #       Please ensure compatibility of scripts/tools with the installed Python version.
 RUN apk add --no-cache python3 py3-pip openjdk11 wget unzip bash \
     && python3 --version \
-    && python3 -c "import sys; assert sys.version_info >= (3,9), 'Python >=3.9 is required, found: {}'.format(sys.version)"
+    && python3 -c "import sys; assert sys.version_info >= (3,9), f'Python >=3.9 is required, found: {sys.version}'"
 
 # 安裝前端檢查工具
 RUN npm install -g \
